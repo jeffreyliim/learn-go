@@ -21,23 +21,25 @@ func main() {
 	pl = pl.addNodeEnd(&person{25, 25, "Jeff", nil})
 	pl = pl.addNodeEnd(&person{20, 55, "Kim", nil})
 	pl = pl.addNodeEnd(&person{10, 25, "Lee", nil})
-	pl = pl.addNodeFront(&person{44, 22, "Mich", nil})
+	//pl = pl.addNodeFront(&person{44, 22, "Mich", nil})
 
-	pl = pl.deleteNodeBack()
-	pl = pl.deleteNodeFront()
-	pl = pl.reverse()
+	//pl = pl.deleteNodeBack()
+	//pl = pl.deleteNodeFront()
+	pl = pl.reverseRecursive()
+	printList(pl)
 
+	//fmt.Println(pl)
 	//	print 1
-	getMiddleNode := pl.getMiddleNode()
-	fmt.Println(getMiddleNode, "Get middle node")
+	//getMiddleNode := pl.getMiddleNode()
+	//fmt.Println(getMiddleNode, "Get middle node")
 
 	//	 print 2
-	n := 6
-	getNthNode := pl.getNthNode(n)
-	fmt.Printf("Getting %v th node: %v", n, getNthNode)
-
-	//	print 3
-	printList(pl)
+	//n := 6
+	//getNthNode := pl.getNthNode(n)
+	//fmt.Printf("Getting %v th node: %v", n, getNthNode)
+	//
+	////	print 3
+	//printList(pl)
 
 }
 
@@ -90,13 +92,31 @@ func (pl *person) getMiddleNode() *person {
 }
 
 func (pl *person) reverse() *person {
+	var prev *person
 	if pl.Next == nil {
 		return pl
 	} else {
-		newHead := pl.Next.reverse()
+		for {
+			if pl == nil {
+				break
+			}
+			next := pl.Next
+			pl.Next = prev
+			prev = pl
+			pl = next
+		}
+		return prev
+	}
+}
+
+func (pl *person) reverseRecursive() *person {
+	if pl.Next == nil {
+		return pl
+	} else {
+		next := pl.Next.reverseRecursive()
 		pl.Next.Next = pl
 		pl.Next = nil
-		return newHead
+		return next
 	}
 }
 
